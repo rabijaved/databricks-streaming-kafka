@@ -3,6 +3,15 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC CREATE CATALOG IF NOT EXISTS 'streaming_sessionization';
+# MAGIC CREATE SCHEMA IF NOT EXISTS 'user_events';
+# MAGIC
+# MAGIC USE CATALOG 'streaming_sessionization';
+# MAGIC USE SCHEMA 'user_events';
+
+# COMMAND ----------
+
 # MAGIC %run ./00-global-setup $reset_all_data=$reset_all_data $db_prefix=retail
 
 # COMMAND ----------

@@ -1,0 +1,49 @@
+resources:
+  jobs:
+    streaming_sessionization_pipeline:
+      name: streaming_sessionization_pipeline
+      tasks:
+        - task_key: Session_Bronze
+          notebook_task:
+            notebook_path: /Repos/rabi.abbasi@databricks.com/databricks-streaming-kafka/streaming_sessionization/src/streaming-sessionization/01-Delta-session-BRONZE
+            base_parameters:
+              reset_all_data: "false"
+            source: WORKSPACE
+          job_cluster_key: Session_Bronze_cluster
+        - task_key: Session_Silver
+          depends_on:
+            - task_key: Session_Bronze
+          notebook_task:
+            notebook_path: /Repos/rabi.abbasi@databricks.com/databricks-streaming-kafka/streaming_sessionization/src/streaming-sessionization/02-Delta-session-SILVER
+            source: WORKSPACE
+          job_cluster_key: Session_Bronze_cluster
+        - task_key: Session_Gold
+          depends_on:
+            - task_key: Session_Silver
+          notebook_task:
+            notebook_path: /Repos/rabi.abbasi@databricks.com/databricks-streaming-kafka/streaming_sessionization/src/streaming-sessionization/03-Delta-session-GOLD
+            source: WORKSPACE
+          job_cluster_key: Session_Bronze_cluster
+        - task_key: Kafka_Producer
+          notebook_task:
+            notebook_path: /Repos/rabi.abbasi@databricks.com/databricks-streaming-kafka/streaming_sessionization/src/streaming-sessionization/_00-Delta-session-PRODUCER
+            source: WORKSPACE
+          job_cluster_key: Session_Bronze_cluster
+      job_clusters:
+        - job_cluster_key: Session_Bronze_cluster
+          new_cluster:
+            cluster_name: ""
+            spark_version: 12.2.x-cpu-ml-scala2.12
+            aws_attributes:
+              first_on_demand: 1
+              availability: SPOT_WITH_FALLBACK
+              zone_id: us-west-2a
+              spot_bid_price_percent: 100
+              ebs_volume_count: 0
+            node_type_id: i3.xlarge
+            enable_elastic_disk: false
+            data_security_mode: SINGLE_USER
+            runtime_engine: STANDARD
+            autoscale:
+              min_workers: 1
+              max_workers: 2

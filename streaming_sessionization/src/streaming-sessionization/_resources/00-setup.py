@@ -4,11 +4,11 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC CREATE CATALOG IF NOT EXISTS 'streaming_sessionization';
-# MAGIC CREATE SCHEMA IF NOT EXISTS 'user_events';
+# MAGIC CREATE CATALOG IF NOT EXISTS dev_streaming_sessionization;
+# MAGIC USE CATALOG dev_streaming_sessionization;
 # MAGIC
-# MAGIC USE CATALOG 'streaming_sessionization';
-# MAGIC USE SCHEMA 'user_events';
+# MAGIC CREATE SCHEMA IF NOT EXISTS user_events;
+# MAGIC USE SCHEMA user_events;
 
 # COMMAND ----------
 

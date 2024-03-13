@@ -12,9 +12,9 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 dbutils.widgets.text("min_dbr_version", "9.1", "Min required DBR version")
 #Empty value will try default: dbdemos with a fallback to hive_metastore
 #Specifying a value will not have fallback and fail if the catalog can't be used/created
-dbutils.widgets.text("catalog", "", "Catalog")
+dbutils.widgets.text("catalog", "dev_streaming_sessionization", "Catalog")
 #Empty value will be set to a database scoped to the current user using db_prefix
-dbutils.widgets.text("db", "", "Database")
+dbutils.widgets.text("db", "user_events", "Database")
 #ignored if db is set (we force the databse to the given value in this case)
 dbutils.widgets.text("db_prefix", "retail", "Database prefix")
 
